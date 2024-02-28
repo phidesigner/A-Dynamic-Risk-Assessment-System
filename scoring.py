@@ -13,7 +13,6 @@ import json
 with open('config.json', 'r', encoding='utf-8') as f:
     config = json.load(f)
 
-dataset_csv_path = os.path.join(config['output_folder_path'])
 test_data_path = os.path.join(config['test_data_path'], 'testdata.csv')
 model_path = os.path.join(config['output_model_path'], 'trainedmodel.pkl')
 score_file_path = os.path.join(config['output_model_path'], 'latestscore.txt')
