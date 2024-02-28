@@ -1,25 +1,48 @@
-import pandas as pd
-import numpy as np
+
 import os
 import json
-from datetime import datetime
+import pandas as pd
 
-
-
-
-#############Load config.json and get input and output paths
-with open('config.json','r') as f:
-    config = json.load(f) 
+# Load config.json and get input and output paths
+with open('config.json', 'r', encoding='utf-8') as f:
+    config = json.load(f)
 
 input_folder_path = config['input_folder_path']
+input_folder_path_prod = config['input_folder_path_prod']
 output_folder_path = config['output_folder_path']
+output_model_path_prod = config['output_folder_path']
 
 
-
-#############Function for data ingestion
+# Function for data ingestion
 def merge_multiple_dataframe():
-    #check for datasets, compile them together, and write to an output file
+    """
+    Merge multiple dataframes into a single dataframe and write to an output file.
+    """
+    # check for datasets, compile them together, and write to an output file
+    all_files = os.listdir(input_folder_path)
+    csv_files = [file for file in all_files if file.endswith('.csv')]
+    dfs = []
 
+    for file in csv_files:
+        file_path = os.path.join(input_folder_path, file)
+        # Read the current file into a DataFrame
+        df = pd.read_csv(file_path)
+        dfs.append(df)
+
+    # Append the data from the current file to the combined DataFrame
+    combined_df = pd.concat(dfs, ignore_index=True)
+
+    # Remove duplicate rows
+    combined_df.drop_duplicates(inplace=True)
+
+    # Write the combined and de-duplicated DataFrame to a csv file
+    combined_df.to_csv(os.path.join(
+        output_folder_path, 'finaldata.csv'), index=False)
+
+    # Save the record of ingested files
+    with open(os.path.join(output_folder_path, 'ingestedfiles.txt'), 'w', encoding='utf-8') as f:
+        for file in csv_files:
+            f.write(f"{file}\n")
 
 
 if __name__ == '__main__':
