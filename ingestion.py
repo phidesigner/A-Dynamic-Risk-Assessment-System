@@ -1,3 +1,6 @@
+"""
+This module is responsible for data ingestion.
+"""
 
 import os
 import json
@@ -16,7 +19,8 @@ output_model_path_prod = config['output_folder_path']
 # Function for data ingestion
 def merge_multiple_dataframe():
     """
-    Merge multiple dataframes into a single dataframe and write to an output file.
+    Merge multiple dataframes into a single dataframe
+    and write to an output file.
     """
     # check for datasets, compile them together, and write to an output file
     all_files = os.listdir(input_folder_path)
@@ -36,13 +40,16 @@ def merge_multiple_dataframe():
     combined_df.drop_duplicates(inplace=True)
 
     # Write the combined and de-duplicated DataFrame to a csv file
-    combined_df.to_csv(os.path.join(
-        output_folder_path, 'finaldata.csv'), index=False)
+    combined_df.to_csv(
+        os.path.join(output_folder_path, 'finaldata.csv'), index=False
+    )
 
     # Save the record of ingested files
-    with open(os.path.join(output_folder_path, 'ingestedfiles.txt'), 'w', encoding='utf-8') as f:
+    with open(
+            os.path.join(output_folder_path, 'ingestedfiles.txt'), 'w',
+            encoding='utf-8') as file_obj:
         for file in csv_files:
-            f.write(f"{file}\n")
+            file_obj.write(f"{file}\n")
 
 
 if __name__ == '__main__':
