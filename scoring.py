@@ -2,11 +2,11 @@
 This module contains code for scoring a trained model.
 """
 
-import pandas as pd
 import os
 import pickle
-from sklearn import metrics
 import json
+import pandas as pd
+from sklearn import metrics
 
 
 # Load config.json and get path variables
