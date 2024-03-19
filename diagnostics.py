@@ -19,10 +19,11 @@ dataset_csv_path = os.path.join(config['output_folder_path'])
 test_data_path = os.path.join(config['test_data_path'])
 prod_deployment_path = os.path.join(config['prod_deployment_path'])
 
+
 # Function to get model predictions
 
 
-def model_predictions(infer_data_path):
+def model_predictions():
     """
     Get model predictions for the given inference data.
 
@@ -32,6 +33,7 @@ def model_predictions(infer_data_path):
     Returns:
     - A list of model predictions.
     """
+    infer_data_path = os.path.join(test_data_path, 'testdata.csv')
     model_path = os.path.join(prod_deployment_path, 'trainedmodel.pkl')
     # Load model
     with open(model_path, 'rb') as model_file:
@@ -39,7 +41,8 @@ def model_predictions(infer_data_path):
     # Load test data
     infer_data = pd.read_csv(infer_data_path)
     features = infer_data[['lastmonth_activity',
-                           'lastyear_activity', 'number_of_employees']]
+                           'lastyear_activity',
+                           'number_of_employees']]
     # Predict
     predictions = model.predict(features)
     return list(predictions)
@@ -150,7 +153,7 @@ def outdated_packages_list():
 
 
 if __name__ == '__main__':
-    # model_predictions()
+    model_predictions()
     dataframe_summary()
     execution_time()
     outdated_packages_list()
