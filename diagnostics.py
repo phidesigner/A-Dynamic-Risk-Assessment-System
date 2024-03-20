@@ -10,6 +10,7 @@ import pickle
 import subprocess
 import time
 import pandas as pd
+import numpy as np
 
 # Load config.json and get environment variables
 with open('config.json', 'r', encoding='utf-8') as config_file:
@@ -44,7 +45,10 @@ def model_predictions(infer_data_path):
                            'number_of_employees']]
     # Predict
     predictions = model.predict(features)
-    return list(predictions)
+    predictions = [int(prediction) if isinstance(
+        prediction, np.integer) else prediction for prediction in predictions]
+
+    return predictions
 
 # Function to get summary statistics
 

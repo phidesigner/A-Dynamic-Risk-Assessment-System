@@ -6,10 +6,9 @@ import pickle
 import json
 import os
 import subprocess
-from flask import Flask, jsonify, request
-import pandas as pd
+from flask import Flask, jsonify, request, Response
 import diagnostics
-
+from scoring import score_model
 
 # Set up variables for use in our script
 app = Flask(__name__)
@@ -20,14 +19,15 @@ with open('config.json', 'r', encoding='utf-8') as f:
 
 dataset_csv_path = os.path.join(config['output_folder_path'])
 prediction_model_path = os.path.join(
-    config['production_deployment'], 'trainedmodel.pkl')
+    config['prod_deployment_path'], 'trainedmodel.pkl')
 
 PREDICTION_MODEL = None
 try:
     with open(prediction_model_path, 'rb') as model_file:
         PREDICTION_MODEL = pickle.load(model_file)
 except FileNotFoundError:
-    print("Model file not found. Ensure the model file path is correct in config.json.")
+    print("Model file not found. Ensure the model file path is correct \
+        in config.json.")
 
 # Prediction Endpoint
 
@@ -51,10 +51,8 @@ def scoring():
     """
     Endpoint for scoring.
     """
-    result = subprocess.run(['python', 'scoring.py'],
-                            capture_output=True, text=True, check=True)
-    score = result.stdout.strip()
-    return jsonify({'score': score}), 200
+    f1_score = score_model()
+    return jsonify({'F1 score': f1_score}), 200
 
 # Summary Statistics Endpoint
 
