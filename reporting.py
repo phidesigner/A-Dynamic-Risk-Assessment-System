@@ -33,7 +33,7 @@ def score_model():
     The confusion matrix plot is then saved to a file.
     """
     # Get model predictions
-    predictions = model_predictions()
+    predictions = model_predictions(test_data_path)
 
     # Load the actual labels
     test_data = pd.read_csv(test_data_path)
