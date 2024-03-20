@@ -5,8 +5,7 @@ Flask application for scoring monitoring.
 import pickle
 import json
 import os
-import subprocess
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request
 import diagnostics
 from scoring import score_model
 

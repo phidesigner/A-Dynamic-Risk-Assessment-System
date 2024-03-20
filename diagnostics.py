@@ -123,8 +123,12 @@ def execution_time():
 
 def outdated_packages_list():
     """
-    Print a table of outdated packages listed in requirements.txt
+    Get a list of outdated packages listed in requirements.txt
     with their current and latest versions.
+
+    Returns:
+    - A list of dictionaries, each containing information
+     about an outdated package.
     """
     # Read the requirements.txt file and extract package names
     with open('requirements.txt', 'r', encoding='utf-8') as f:
@@ -136,11 +140,12 @@ def outdated_packages_list():
                             capture_output=True, text=True, check=True)
     lines = result.stdout.split('\n')
 
-    # Parse the output to find outdated packages
+    # Initialize a list to hold outdated package info
     outdated_packages = []
 
+    # Parse the output to find outdated packages
     for line in lines:
-        if line and 'Package' not in line and '---' not in line:  # Skip header lines
+        if line and 'Package' not in line and '---' not in line:
             package_details = line.split()
             package_name, current_version, latest_version, _ = package_details
             if package_name.lower() in required_packages:

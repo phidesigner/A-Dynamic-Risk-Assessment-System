@@ -1,12 +1,15 @@
-# from flask import Flask, session, jsonify, request
-import pandas as pd
+"""
+This module contains functions for deploying the trained model
+and associated files.
+"""
+
 import os
 import json
 import shutil
 
 
 # Load config.json and correct path variable
-with open('config.json', 'r') as f:
+with open('config.json', 'r', encoding='utf-8') as f:
     config = json.load(f)
 
 prod_deployment_path = os.path.join(config['prod_deployment_path'])
@@ -20,7 +23,7 @@ output_folder_path = os.path.join(
 
 def store_model_into_pickle():
     """
-    Copies the trained model, model score, and ingested data record 
+    Copies the trained model, model score, and ingested data record
     to the production deployment directory.
     """
     try:
@@ -34,10 +37,9 @@ def store_model_into_pickle():
         shutil.copy(output_folder_path, prod_deployment_path)
 
         print("Files successfully deployed to production directory.")
-    except Exception as e:
+    except FileNotFoundError as e:
         print(f"Error during deployment: {e}")
 
 
-# Example usage
 if __name__ == "__main__":
     store_model_into_pickle()
