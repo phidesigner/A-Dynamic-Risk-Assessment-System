@@ -23,7 +23,7 @@ prod_deployment_path = os.path.join(config['prod_deployment_path'])
 # Function to get model predictions
 
 
-def model_predictions():
+def model_predictions(infer_data_path):
     """
     Get model predictions for the given inference data.
 
@@ -33,7 +33,6 @@ def model_predictions():
     Returns:
     - A list of model predictions.
     """
-    infer_data_path = os.path.join(test_data_path, 'testdata.csv')
     model_path = os.path.join(prod_deployment_path, 'trainedmodel.pkl')
     # Load model
     with open(model_path, 'rb') as model_file:
@@ -133,27 +132,26 @@ def outdated_packages_list():
                             capture_output=True, text=True, check=True)
     lines = result.stdout.split('\n')
 
-    # Find the start of the table headings to correctly parse package names
-    for i, line in enumerate(lines):
-        if 'Package' in line and 'Version' in line and 'Latest' in line:
-            start_index = i + 1  # The actual data starts after the headings
-            break
-    else:  # If the headings are not found, there's nothing to filter/print
-        print("No outdated packages found.")
-        return
+    # Parse the output to find outdated packages
+    outdated_packages = []
 
-    # Filter and print the table headings plus outdated packages
-    # listed in requirements.txt
-    print(lines[start_index - 1])
-    for line in lines[start_index:]:
-        if line:
-            package_name = line.split()[0]
+    for line in lines:
+        if line and 'Package' not in line and '---' not in line:  # Skip header lines
+            package_details = line.split()
+            package_name, current_version, latest_version, _ = package_details
             if package_name.lower() in required_packages:
-                print(line)
+                outdated_packages.append({
+                    'package_name': package_name,
+                    'current_version': current_version,
+                    'latest_version': latest_version
+                })
+
+    return outdated_packages
 
 
 if __name__ == '__main__':
-    model_predictions()
+    test_path = os.path.join(test_data_path, 'testdata.csv')
+    model_predictions(test_path)
     dataframe_summary()
     execution_time()
     outdated_packages_list()
