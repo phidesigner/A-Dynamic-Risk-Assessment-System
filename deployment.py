@@ -14,7 +14,8 @@ with open('config.json', 'r', encoding='utf-8') as f:
 
 prod_deployment_path = os.path.join(config['prod_deployment_path'])
 model_path = os.path.join(config['output_model_path'], 'trainedmodel.pkl')
-score_file_path = os.path.join(config['output_model_path'], 'latestscore.txt')
+score_file_path = os.path.join(
+    config['output_model_path'], 'latestscore.txt')
 output_folder_path = os.path.join(
     config['output_folder_path'], 'ingestedfiles.txt')
 
@@ -36,7 +37,7 @@ def store_model_into_pickle():
         shutil.copy(score_file_path, prod_deployment_path)
         shutil.copy(output_folder_path, prod_deployment_path)
 
-        print("Files successfully deployed to production directory.")
+        print("Files successfully deployed to production directory")
     except FileNotFoundError as e:
         print(f"Error during deployment: {e}")
 

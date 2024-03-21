@@ -16,7 +16,7 @@ with open('config.json', 'r', encoding='utf-8') as f:
 test_data_path = os.path.join(config['test_data_path'], 'testdata.csv')
 model_path = os.path.join(config['prod_deployment_path'], 'trainedmodel.pkl')
 score_file_path = os.path.join(
-    config['prod_deployment_path'], 'latestscore.txt')
+    config['output_model_path'], 'latestscore.txt')
 
 # Function for model scoring
 

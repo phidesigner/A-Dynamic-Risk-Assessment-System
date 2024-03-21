@@ -26,12 +26,11 @@ The process includes the following steps:
 import os
 import json
 import ingestion
-import pandas as pd
 import training
 import scoring
 import deployment
 import diagnostics
-import reporting
+# import reporting
 
 with open('config.json', 'r', encoding='utf-8') as f:
     config = json.load(f)
@@ -77,30 +76,37 @@ def main():
             predictions=predictions, new_data_path=new_data_path)
 
         # Read the last score from 'latestscore.txt'
-        with open(os.path.join(prod_deployment_path, 'latestscore.txt'), 'r', encoding='utf-8') as f:
+        with open(os.path.join(prod_deployment_path, 'latestscore.txt'), 'r',
+                  encoding='utf-8') as f:
             last_score_str = f.readline().strip()
             last_score = float(last_score_str.split(": ")[1])
 
         # 3. Check for model drift
         if new_score < last_score:
             model_drift = True
-            print("Model drift detected.")
+            print("Model drift detected")
         else:
             model_drift = False
-            print("No model drift detected.")
+            print("No model drift detected")
 
         # 4. Deciding whether to proceed, part 2
         if model_drift:
             proceed = True
-            print("Proceeding with re-deployment and diagnostics.")
+            print("Proceeding with re-deployment and diagnostics")
         else:
             proceed = False
-            print("Process ends due to no model drift.")
+            print("Process ends due to no model drift")
 
-    # if you found model drift, you should proceed. otherwise, do end the process here
+        if proceed:
+            # 5.1. Re-training the model with the new data
+            # if you found evidence for model drift, re-run the deployment.py
+            print("Re-training the model...")
+            training.train_model()
 
-    # Re-deployment
-    # if you found evidence for model drift, re-run the deployment.py script
+            # 5.2. Re-deploying the model
+            print("Re-deploying the model...")
+            # Calling the function to deploy the retrained model
+            deployment.store_model_into_pickle()
 
     # Diagnostics and reporting
     # run diagnostics.py and reporting.py for the re-deployed model
