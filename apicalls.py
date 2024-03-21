@@ -20,7 +20,7 @@ with open('config.json', 'r', encoding='utf-8') as f:
 
 test_data_path = os.path.join(config['test_data_path'], 'testdata.csv')
 test_data_payload = {"dataset_path": test_data_path}
-output_file_path = os.path.join(config['output_model_path'], 'apireturns.txt')
+output_file_path = os.path.join(config['output_model_path'], 'apireturns2.txt')
 
 # Specify a URL that resolves to your workspace
 URL = "http://127.0.0.1:8000"

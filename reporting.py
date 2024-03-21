@@ -52,7 +52,7 @@ def score_model():
 
     # Save the confusion matrix plot
     confusion_matrix_plot_path = os.path.join(
-        output_model_path, 'confusionmatrix.png')
+        output_model_path, 'confusionmatrix2.png')
     plt.savefig(confusion_matrix_plot_path)
     print(f"Confusion matrix plot saved to {confusion_matrix_plot_path}")
 
