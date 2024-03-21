@@ -47,10 +47,6 @@ def score_model(predictions=None, new_data_path=None):
         # Calculate F1 score
         f1 = metrics.f1_score(y_test, predictions)
 
-        # Overwrite the score file only when using the default test dataset
-        with open(score_file_path, 'w', encoding='utf-8') as score_file:
-            score_file.write(f"F1 Score: {f1}")
-
     else:
         # Use provided predictions and new data for scoring
         new_data = pd.read_csv(new_data_path).iloc[:, 1:]
@@ -59,6 +55,9 @@ def score_model(predictions=None, new_data_path=None):
 
         # Calculate F1 score
         f1 = metrics.f1_score(y_test, predictions)
+
+    with open(score_file_path, 'w', encoding='utf-8') as score_file:
+        score_file.write(f"F1 Score: {f1}")
 
     return f1
 

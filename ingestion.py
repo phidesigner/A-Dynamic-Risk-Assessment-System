@@ -11,9 +11,7 @@ with open('config.json', 'r', encoding='utf-8') as f:
     config = json.load(f)
 
 input_folder_path = config['input_folder_path']
-input_folder_path_prod = config['input_folder_path_prod']
 output_folder_path = config['output_folder_path']
-output_model_path_prod = config['output_folder_path']
 
 
 # Function for data ingestion
