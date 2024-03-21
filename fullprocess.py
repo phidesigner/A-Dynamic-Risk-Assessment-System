@@ -1,27 +1,34 @@
 
 
 """
-This module contains the main process for scoring monitoring. It checks for new data, model drift, and performs re-deployment, diagnostics, and reporting.
+This module contains the main process for scoring monitoring.
+It checks for new data, model drift, and performs re-deployment,
+diagnostics, and reporting.
 
 The process includes the following steps:
 1. Check and read new data:
     - Read the 'ingestedfiles.txt' file.
-    - Determine whether the source data folder has files that aren't listed in 'ingestedfiles.txt'.
+    - Determine whether the source data folder has files that aren't
+      listed in 'ingestedfiles.txt'.
 
 2. Deciding whether to proceed, part 1:
-    - If new data is found, proceed with the process. Otherwise, end the process here.
+    - If new data is found, proceed with the process.
+      Otherwise, end the process here.
 
 3. Checking for model drift:
-    - Check whether the score from the deployed model is different from the score from the model that uses the newest ingested data.
+    - Check whether the score from the deployed model is different
+      from the score from the model that uses the newest ingested data.
 
 4. Deciding whether to proceed, part 2:
-    - If model drift is found, proceed with the process. Otherwise, end the process here.
+    - If model drift is found, proceed with the process.
+      Otherwise, end the process here.
 
 5. Re-deployment:
     - If evidence for model drift is found, re-run the 'deployment.py' script.
 
 6. Diagnostics and reporting:
-    - Run the 'diagnostics.py' and 'reporting.py' scripts for the re-deployed model.
+    - Run the 'diagnostics.py' and 'reporting.py' scripts for the
+     re-deployed model.
 """
 import os
 import json
@@ -32,8 +39,8 @@ import deployment
 import diagnostics
 # import reporting
 
-with open('config.json', 'r', encoding='utf-8') as f:
-    config = json.load(f)
+with open('config.json', 'r', encoding='utf-8') as config_file:
+    config = json.load(config_file)
 
 prod_deployment_path = config['prod_deployment_path']
 input_folder_path = config['input_folder_path']
@@ -43,6 +50,16 @@ new_data_path = os.path.join(config['output_folder_path'], 'finaldata.csv')
 
 def main():
     """
+    Main function that executes the full process of scoring monitoring.
+
+    This function performs the following steps:
+    1. Checks and reads new data.
+    2. Decides whether to proceed based on the presence of new data.
+    3. Checks for model drift.
+    4. Decides whether to proceed with re-deployment and diagnostics based on
+     model drift.
+    5. Re-trains the model with new data and re-deploys the model if necessary.
+    6. Runs diagnostics and reporting for the re-deployed model.
     """
     # 1. Check and read new data
     # first, read ingestedfiles.txt
@@ -57,7 +74,8 @@ def main():
         file for file in source_data_files if file not in ingested_files]
 
     # 2. Deciding whether to proceed, part 1
-    # if you found new data, you should proceed. otherwise, do end the process here
+    # if you found new data, you should proceed. otherwise,
+    # do end the process here
     if new_files:
         # New data found, run ingestion process
         ingestion.merge_multiple_dataframe()
