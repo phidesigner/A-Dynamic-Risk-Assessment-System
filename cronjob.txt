@@ -1,0 +1,1 @@
+*10 * * * * /home/codespace/.python/current/bin/python3 /workspaces/A-Dynamic-Risk-Assessment-System/fullprocess.py
