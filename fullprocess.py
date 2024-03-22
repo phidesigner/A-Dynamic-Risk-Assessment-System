@@ -27,7 +27,7 @@ The process includes the following steps:
     - If evidence for model drift is found, re-run the 'deployment.py' script.
 
 6. Diagnostics and reporting:
-    - Run the 'diagnostics.py' and 'reporting.py' scripts for the
+    - Run the 'apicalls.py' and 'reporting.py' scripts for the
      re-deployed model.
 """
 import os
@@ -37,7 +37,8 @@ import training
 import scoring
 import deployment
 import diagnostics
-# import reporting
+import reporting
+import apicalls
 
 with open('config.json', 'r', encoding='utf-8') as config_file:
     config = json.load(config_file)
@@ -128,6 +129,9 @@ def main():
 
     # Diagnostics and reporting
     # run diagnostics.py and reporting.py for the re-deployed model
+            print("Running diagnostics and generating reports...")
+            apicalls.run_apicalls()
+            reporting.score_model()
 
 
 if __name__ == "__main__":
